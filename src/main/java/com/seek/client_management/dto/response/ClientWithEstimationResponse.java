@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class ClientWithEstimationDto {
+public class ClientWithEstimationResponse {
     Long id;
     String name;
     String lastname;
@@ -15,7 +15,7 @@ public class ClientWithEstimationDto {
     LocalDate birthDate;
     LocalDate estimatedDeathDate;
 
-    public ClientWithEstimationDto(Client client, int lifeExpectancyYears) {
+    public ClientWithEstimationResponse(Client client, int lifeExpectancyYears) {
         this.id = client.getId();
         this.name = client.getName();
         this.fullName = client.getFullName();

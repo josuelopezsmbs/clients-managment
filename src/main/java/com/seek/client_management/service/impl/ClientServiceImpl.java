@@ -1,9 +1,9 @@
 package com.seek.client_management.service.impl;
 
 import com.seek.client_management.dto.request.ClientRequest;
-import com.seek.client_management.dto.response.ClientDto;
-import com.seek.client_management.dto.response.ClientMetricsDto;
-import com.seek.client_management.dto.response.ClientWithEstimationDto;
+import com.seek.client_management.dto.response.ClientMetricsResponse;
+import com.seek.client_management.dto.response.ClientResponse;
+import com.seek.client_management.dto.response.ClientWithEstimationResponse;
 import com.seek.client_management.mapper.ClientMapper;
 import com.seek.client_management.model.Client;
 import com.seek.client_management.repository.ClientRepository;
@@ -31,24 +31,24 @@ public class ClientServiceImpl implements ClientService {
     private int lifeExpectancyYears;
 
     @Transactional
-    public ClientDto create(ClientRequest request) {
+    public ClientResponse create(ClientRequest request) {
         var clientEntity = clientMapper.requestToClient(request);
 
         var clientSaved = clientRepository.saveAndFlush(clientEntity);
 
-        return clientMapper.clientToClientDto(clientSaved);
+        return clientMapper.clientToClientResponse(clientSaved);
     }
 
     @Override
-    public List<ClientWithEstimationDto> getAllClientsWithEstimation() {
+    public List<ClientWithEstimationResponse> getAllClientsWithEstimation() {
         List<Client> clients = clientRepository.findAll();
         return clients.stream()
-                .map(client -> new ClientWithEstimationDto(client, lifeExpectancyYears))
+                .map(client -> new ClientWithEstimationResponse(client, lifeExpectancyYears))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ClientMetricsDto getClientMetrics() {
+    public ClientMetricsResponse getClientMetrics() {
         Object[] result = (Object[]) clientRepository.getClientMetrics();
 
         Double averageAge = result[0] != null ? ((Number) result[0]).doubleValue() : 0.0;
@@ -56,6 +56,6 @@ public class ClientServiceImpl implements ClientService {
 
         logger.info("Client metrics -> averageAge: {}, standardDeviation: {}", averageAge, standardDeviation);
 
-        return new ClientMetricsDto(averageAge, standardDeviation);
+        return new ClientMetricsResponse(averageAge, standardDeviation);
     }
 }

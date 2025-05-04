@@ -1,9 +1,9 @@
 package com.seek.client_management.controller;
 
 import com.seek.client_management.dto.request.ClientRequest;
-import com.seek.client_management.dto.response.ClientDto;
-import com.seek.client_management.dto.response.ClientMetricsDto;
-import com.seek.client_management.dto.response.ClientWithEstimationDto;
+import com.seek.client_management.dto.response.ClientMetricsResponse;
+import com.seek.client_management.dto.response.ClientResponse;
+import com.seek.client_management.dto.response.ClientWithEstimationResponse;
 import com.seek.client_management.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,17 +25,17 @@ public class ClientController {
     public final ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<ClientDto> createClient(@RequestBody @Valid ClientRequest request) {
+    public ResponseEntity<ClientResponse> createClient(@RequestBody @Valid ClientRequest request) {
         return ResponseEntity.ok(clientService.create(request));
     }
 
     @GetMapping
-    public List<ClientWithEstimationDto> getClientsWithEstimation() {
+    public List<ClientWithEstimationResponse> getClientsWithEstimation() {
         return clientService.getAllClientsWithEstimation();
     }
 
     @GetMapping("/metrics")
-    public ClientMetricsDto getClientMetrics() {
+    public ClientMetricsResponse getClientMetrics() {
         return clientService.getClientMetrics();
     }
 }

@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record ClientDto(
+public record ClientResponse(
         Long id,
         String name,
         String lastname,
