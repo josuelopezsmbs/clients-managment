@@ -281,6 +281,11 @@
 		{
 			"key": "token",
 			"value": ""
+		},
+		{
+			"key": "api_url",
+			"value": "http://seek-api-env.eba-78ixjbis.us-east-2.elasticbeanstalk.com/api",
+			"type": "default"
 		}
 	]
 }
