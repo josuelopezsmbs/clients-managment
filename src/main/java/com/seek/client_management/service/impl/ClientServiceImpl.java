@@ -4,6 +4,7 @@ import com.seek.client_management.dto.request.ClientRequest;
 import com.seek.client_management.dto.response.ClientMetricsResponse;
 import com.seek.client_management.dto.response.ClientResponse;
 import com.seek.client_management.dto.response.ClientWithEstimationResponse;
+import com.seek.client_management.exception.ClientDuplicityException;
 import com.seek.client_management.mapper.ClientMapper;
 import com.seek.client_management.model.Client;
 import com.seek.client_management.repository.ClientRepository;
@@ -34,6 +35,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Transactional
     public ClientResponse create(ClientRequest request) {
+        var clientExist = clientRepository.findByNameAndLastname(request.name(), request.lastname());
+
+        if (clientExist.isPresent()) {
+            throw new ClientDuplicityException();
+        }
+
         var clientEntity = clientMapper.requestToClient(request);
 
         var clientSaved = clientRepository.saveAndFlush(clientEntity);

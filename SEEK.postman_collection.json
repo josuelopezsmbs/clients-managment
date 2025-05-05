@@ -11,14 +11,14 @@
 			"name": "Clients",
 			"item": [
 				{
-					"name": "Register Client",
+					"name": "Register Client - StatusCode 200",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{vault:authorization-secret}}",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -27,7 +27,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"josue\",\r\n    \"lastname\":\"lopez\",\r\n    \"age\": 27,\r\n    \"birthDate\": \"2025-05-04T01:55:33.966Z\"\r\n}",
+							"raw": "{\r\n    \"name\":\"client josue\",\r\n    \"lastname\":\"lopez\",\r\n    \"age\": 27,\r\n    \"birthDate\": \"2025-05-04T01:55:33.966Z\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -54,7 +54,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{vault:authorization-secret}}",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -92,7 +92,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{vault:authorization-secret}}",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -107,6 +107,42 @@
 							"path": [
 								"clients",
 								"metrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Client - Error 422",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"josue\",\r\n    \"lastname\": \"\",\r\n    \"age\": 27,\r\n    \"birthDate\": \"2025-05-04T01:55:33.966Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/clients",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"clients"
 							]
 						}
 					},
@@ -145,7 +181,47 @@
 					"response": []
 				},
 				{
+					"name": "Register User - Error 422",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"josue@test.com\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/signup",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"token\", response.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -170,8 +246,41 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Login - Error 422",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"josue@test.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/login",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }

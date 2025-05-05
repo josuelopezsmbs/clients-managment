@@ -1,17 +1,17 @@
 package com.seek.client_management.dto.request;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
 public record RegisterUserRequest(
-        @NotNull
+        @NotBlank
         @Email
         String email,
-        @NotNull
+        @NotBlank
         String password,
-        @NotNull
+        @NotBlank
         String role
 ) {
 }

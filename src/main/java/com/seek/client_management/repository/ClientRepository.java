@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
@@ -15,4 +17,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
                 FROM clients
             """, nativeQuery = true)
     Object getClientMetrics();
+
+    Optional<Client> findByNameAndLastname(String name, String lastname);
 }
