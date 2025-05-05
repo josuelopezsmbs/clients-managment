@@ -12,11 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,11 +42,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<ClientWithEstimationResponse> getAllClientsWithEstimation() {
-        List<Client> clients = clientRepository.findAll();
-        return clients.stream()
-                .map(client -> new ClientWithEstimationResponse(client, lifeExpectancyYears))
-                .collect(Collectors.toList());
+    public Page<ClientWithEstimationResponse> getAllClientsWithEstimation(Pageable pageable) {
+        Page<Client> clients = clientRepository.findAll(pageable);
+
+        List<ClientWithEstimationResponse> response = clients
+                .stream()
+                .map(client -> new ClientWithEstimationResponse(client, lifeExpectancyYears)).toList();
+
+        return new PageImpl<>(response, pageable, clients.getTotalElements());
     }
 
     @Override

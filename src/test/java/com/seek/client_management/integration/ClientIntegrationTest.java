@@ -49,7 +49,7 @@ public class ClientIntegrationTest {
     @Test
     @WithMockUser
     void testListClients() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/clients"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/clients/with-estimations"))
                 .andExpect(status().isOk());
     }
 }

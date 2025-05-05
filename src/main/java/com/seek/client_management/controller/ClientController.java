@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/clients")
@@ -29,9 +29,9 @@ public class ClientController {
         return ResponseEntity.ok(clientService.create(request));
     }
 
-    @GetMapping
-    public List<ClientWithEstimationResponse> getClientsWithEstimation() {
-        return clientService.getAllClientsWithEstimation();
+    @GetMapping("/with-estimations")
+    public Page<ClientWithEstimationResponse> getClientsWithEstimation(Pageable pageable) {
+        return clientService.getAllClientsWithEstimation(pageable);
     }
 
     @GetMapping("/metrics")
